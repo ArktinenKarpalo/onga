@@ -1,0 +1,42 @@
+#upload-bar-progress {
+	display: flex;
+	text-align: center;
+	vertical-align: center;
+}
+
+#upload-bar-progress-text {
+	display: grid;
+	align-items: center;
+}
+
+#upload-spinner {
+	width: 48px;
+	height: 48px;
+}
+
+.music-upload-refresh {
+	color: white;
+	font-weight: bold;
+	cursor: pointer;
+	margin: 5px;
+}
+
+#music-upload-wrapper {
+	margin-top: 10px;
+	display: flex;
+}
+
+#music-upload-input {
+	display: none;
+}
+
+#music-upload-btn {
+	width: 100px;
+	height: 30px;
+	margin-top: 5px;
+	background-color: cornflowerblue;
+	border: 1px solid white;
+	display: inline-block;
+	cursor: pointer;
+	text-align: center;
+}

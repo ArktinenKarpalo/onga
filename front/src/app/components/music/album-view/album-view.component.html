@@ -1,0 +1,24 @@
+<div id="album-view-info-wrap">
+	<img id="album-view-cover"
+		 src="{{(album.cover_path != undefined ? 'files/' + album.cover_path : '/assets/album.svg')}}"
+		 (click)=this.music.playAlbum(this.album)>
+	<div id="album-view-info-right">
+		<h2>{{this.album.name}}</h2>
+		<h4>{{this.album.artist}}</h4>
+		<div class="album-view-info-inline">
+			<h4 class="album-view-info-inline">{{this.album.year}} - {{this.album.genre}}</h4>
+			<h4 class="album-view-info-inline" id="album-duration">{{this.duration | duration}}</h4>
+			<button class="album-view-info-inline" mat-icon-button [matMenuTriggerFor]="menu">
+				<mat-icon>more_vert</mat-icon>
+			</button>
+		</div>
+		<mat-menu #menu="matMenu">
+			<ng-template matMenuContent>
+				<button mat-menu-item (click)=this.deleteAlbumConfirm()>
+					<span>Delete</span>
+				</button>
+			</ng-template>
+		</mat-menu>
+	</div>
+</div>
+<app-track-list [tracks]=tracks></app-track-list>

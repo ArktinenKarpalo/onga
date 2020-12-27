@@ -1,0 +1,19 @@
+<div id="settings-container">
+	<div id="settings">
+		<mat-menu #menu="matMenu">
+			<ng-template matMenuContent>
+				<h4>Audio quality</h4>
+				<mat-button-toggle-group (valueChange)=this.user.setQuality($event)>
+					<mat-button-toggle value="2" [checked]="this.user.selected_quality==2">High 256kbit/s
+					</mat-button-toggle>
+					<mat-button-toggle value="1" [checked]="this.user.selected_quality==1">Low 64kbit/s
+					</mat-button-toggle>
+				</mat-button-toggle-group>
+			</ng-template>
+		</mat-menu>
+	</div>
+</div>
+<button mat-icon-button class="settings-menu-buttons" (click)=settingsExpand.toggle() [matMenuTriggerFor]="menu"
+		*ngIf="Cookies.get('session') != undefined">
+	<mat-icon id="settings-btn">settings</mat-icon>
+</button>

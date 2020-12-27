@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Confirm deletion</h1>
+<mat-dialog-content>
+	<span>Are you sure that you want to mark album <strong>{{this.data.name}}</strong> for deletion?</span>
+	<br>
+	<span>This action is permanent</span>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-button mat-dialog-close>Cancel</button>
+	<button mat-button mat-dialog-close cdkFocusInitial (click)=this.user.delete_album(this.data)>Confirm</button>
+</mat-dialog-actions>

@@ -1,0 +1,4 @@
+<div class="music-view-wrap">
+	<app-album-list [albums]=albums></app-album-list>
+	<app-track-list [tracks]=tracks *ngIf="tracks.length > 0"></app-track-list>
+</div>

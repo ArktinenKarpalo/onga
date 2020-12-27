@@ -1,0 +1,17 @@
+h1 {
+	text-align: center;
+}
+
+#register-form {
+	margin-top: 25px;
+	display: block;
+	text-align: center;
+}
+
+#register-form-wrapper {
+	display: block;
+}
+
+#error {
+	color: red;
+}

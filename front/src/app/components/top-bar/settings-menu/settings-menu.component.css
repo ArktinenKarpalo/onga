@@ -1,0 +1,16 @@
+#settings-container {
+	display: inline-block;
+	position: fixed;
+}
+
+#settings {
+	position: absolute;
+	display: inline-block;
+	top: 0;
+	width: 400px;
+	transform: translate(-100%, 10%);
+}
+
+#settings-btn {
+	font-size: 24px;
+}

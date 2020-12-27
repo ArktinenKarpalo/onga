@@ -1,0 +1,58 @@
+<div id="playlist-container">
+	<div id="playlist">
+		<mat-expansion-panel togglePosition=after>
+			<mat-expansion-panel-header *ngIf="playlistExpand != undefined && playlistExpand.expanded">
+				<mat-panel-title>
+					Playlist
+					<div class="playlist-remaining">
+						Remaining: {{(this.music.play_queue | trackTotalDuration) + (this.music.state == this.states.PLAYING ? (this.toNumber(this.music.current_track.duration) - this.music.current_audio.currentTime) : 0) | duration}}
+					</div>
+					<button mat-button (click)="music.setTrack(undefined);music.clear_queue();">Clear</button>
+				</mat-panel-title>
+			</mat-expansion-panel-header>
+			<div id="playlist-list">
+				<cdk-virtual-scroll-viewport class="track-viewport" [itemSize]=21>
+					<table>
+						<tr>
+							<th matColumnDef="num">Num</th>
+							<th matColumnDef="name">Name</th>
+							<th matColumnDef="artist">Artist</th>
+							<th matColumnDef="duration" class="playlist-duratio">Duration</th>
+							<th></th>
+						</tr>
+						<tr class="playlist-row"
+							*cdkVirtualFor="let track of [].concat(this.music.play_history, (this.music.current_track != undefined) ? [this.music.current_track] : [], this.music.play_queue); let index = index;"
+							[class.playlist-current-track]="index === this.music.play_history.length"
+							[class.playlist-history]="index < this.music.play_history.length"
+							(click)=this.music.skipTo(index-this.music.play_history.length)>
+							<td>
+								<div class="playlist-row-cont playlist-num">
+									{{index + 1}}
+								</div>
+							</td>
+							<td class="playlist-name-td">
+								<div class="playlist-row-cont playlist-name" title={{track.name}}>
+									{{track.name}}
+								</div>
+							</td>
+							<td>
+								<div class="playlist-row-cont playlist-artist" title={{track.artist}}>
+									{{track.artist}}
+								</div>
+							</td>
+							<td class="playlist-duration">
+								<div class="playlist-row-cont playlist-duration">
+									{{track.duration | duration}}
+								</div>
+							</td>
+						</tr>
+					</table>
+				</cdk-virtual-scroll-viewport>
+			</div>
+		</mat-expansion-panel>
+	</div>
+</div>
+<button mat-icon-button class="music-player-buttons"
+		(click)="playlistExpand.toggle(); this.vs.scrollToIndex(this.music.play_history.length)">
+	<mat-icon id="playlist-btn">playlist_play</mat-icon>
+</button>

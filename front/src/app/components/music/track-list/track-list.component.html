@@ -1,0 +1,64 @@
+<div class="track-list-wrapper">
+	<cdk-virtual-scroll-viewport class="track-viewport" [itemSize]=41>
+		<table matSort matSortActive="num" matSortDirection="asc">
+			<tr>
+				<th matColumnDef="num" class="track-list-num" mat-sort-header>Num</th>
+				<th matColumnDef="name" class="track-list-name" mat-sort-header>Name</th>
+				<th matColumnDef="artist" class="track-list-artist" mat-sort-header>Artist</th>
+				<th matColumnDef="duration" class="track-list-duration" mat-sort-header>Duration</th>
+				<th matColumnDef="playcnt" class="track-list-playcnt" mat-sort-header>
+					<mat-icon>play_arrow</mat-icon>
+				</th>
+				<th class="track-list-menu"></th>
+			</tr>
+			<tr class="track-list-row" *cdkVirtualFor="let track of dataSource; let index = index;"
+				[class.unavailable-row]="this.encoding_unavailable(index)"
+				[class.tracklist-current-track]="this.music.current_track==track">
+				<td>
+					<div class="track-list-row-cont track-list-num">
+						{{track.track_num}}
+					</div>
+				</td>
+				<td (click)=queueFrom(index) class="track-list-name-td">
+					<div class="track-list-row-cont track-list-name" title={{track.name}}>
+						{{track.name}}
+					</div>
+				</td>
+				<td>
+					<div class="track-list-row-cont track-list-artist" title={{track.artist}}>
+						{{track.artist}}
+					</div>
+				</td>
+				<td class="track-list-duration">
+					<div class="track-list-row-cont">
+						{{track.duration | duration}}
+					</div>
+				</td>
+				<td class="track-list-playcnt">
+					<span *ngIf="track.play_cnt > 0">{{track.play_cnt}}</span>
+				</td>
+				<td class="track-list-menu">
+					<button mat-icon-button [matMenuTriggerFor]="menu">
+						<mat-icon>more_vert</mat-icon>
+					</button>
+					<mat-menu #menu="matMenu">
+						<ng-template matMenuContent>
+							<button mat-menu-item (click)=queueFrom(index)>
+								<span>Play {{track.name}}</span>
+							</button>
+							<button mat-menu-item (click)=this.deleteTrackConfirm(track)>
+								<span>Delete</span>
+							</button>
+							<button mat-menu-item (click)=this.music.appendToQueueFront(track)>
+								<span>Append to the front of the queue</span>
+							</button>
+							<button mat-menu-item (click)=this.music.appendToQueue(track)>
+								<span>Append to the end of the queue</span>
+							</button>
+						</ng-template>
+					</mat-menu>
+				</td>
+			</tr>
+		</table>
+	</cdk-virtual-scroll-viewport>
+</div>

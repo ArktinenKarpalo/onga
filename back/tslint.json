@@ -1,0 +1,10 @@
+{
+  "rules": {
+	"semicolon": [true, "always"],
+	"no-floating-promises": true,
+	"max-line-length": [
+	  true,
+	  140
+	]
+  }
+}

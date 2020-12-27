@@ -1,0 +1,17 @@
+<div id="music-upload-wrapper" *ngIf="this.Cookies.get('session') != undefined">
+	<div *ngIf="upload.upload_queue > 0 || upload.uploads_processing > 0" id="upload-spinner">
+		<mat-progress-spinner diameter=48 color=accent mode="indeterminate" value=5></mat-progress-spinner>
+	</div>
+	<span *ngIf="upload.upload_queue > 0" id="upload-bar-progress-text">Uploading tracks, {{upload.upload_queue}}
+		remaining</span>
+	<span *ngIf="upload.uploads_processing > 0 && upload.upload_queue == 0" class="music-upload-refresh">Preparing to upload...</span>
+	<span *ngIf="user.should_refresh && upload.upload_queue == 0 && upload.uploads_processing == 0 "
+		  (click)="user.getData()" class="music-upload-refresh">Click to refresh data!</span>
+	<div>
+		<label id="music-upload-btn">
+			<input id="music-upload-input" type="file" accept="audio"
+				   (change)="upload.uploadFiles2($event.target.files)" webkitdirectory>
+			Upload
+		</label>
+	</div>
+</div>

@@ -1,0 +1,89 @@
+:host {
+	flex-grow: 1;
+}
+
+#playlist-container {
+	display: inline-block;
+	position: fixed;
+}
+
+.playlist-remaining {
+	margin-left: auto;
+	margin-right: 10px;
+}
+
+#playlist {
+	position: absolute;
+	display: inline-block;
+	top: 0;
+	width: 800px;
+	transform: translateY(-100%);
+}
+
+#playlist-list {
+	display: block;
+	height: 400px;
+}
+
+.playlist-current-track {
+	color: orange;
+}
+
+.playlist-history {
+	color: gray;
+}
+
+#playlist-btn {
+	font-size: 48px;
+}
+
+.track-viewport {
+	height: 100%;
+}
+
+.playlist-num {
+	width: 35px;
+}
+
+.playlist-name {
+	width: 400px;
+}
+
+.playlist-artist {
+	width: 175px;
+}
+
+.playlist-duration {
+	width: 60px;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+th {
+	text-align: left;
+	padding: 2px 5px;
+	color: rgba(0, 0, 0, 0.54);
+	cursor: pointer;
+	font-weight: 500;
+	font-size: 12px;
+}
+
+.playlist-name-td {
+	width: 100%;
+}
+
+td {
+	padding: 0 5px;
+	border-top: 1px solid rgba(0, 0, 0, 0.25);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.playlist-row-cont {
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+

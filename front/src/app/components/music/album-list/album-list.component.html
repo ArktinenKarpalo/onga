@@ -1,0 +1,9 @@
+<div class="album-list">
+	<div class="album-entry" *ngFor="let album of this.sortAlbums(albums)">
+		<img class="album-cover"
+			 src="{{(album.cover_path != undefined ? 'files/' + album.cover_path : '/assets/album.svg')}}"
+			 (click)=this.music.playAlbum(album)>
+		<span class="album-name" (click)=viewAlbum(album) title={{album.name}}>{{album.name}}</span>
+		<span class="album-artist" (click)=viewAlbum(album) title={{album.artist}}>{{album.artist}}</span>
+	</div>
+</div>

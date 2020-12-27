@@ -1,0 +1,20 @@
+<mat-toolbar color=primary id="top-toolbar">
+	<span id="top-bar-title" routerLink="" (click)="this.search.search('')">Music player</span>
+	<mat-form-field appearance=fill id="search" *ngIf="Cookies.get('session') != undefined">
+		<mat-label>Search</mat-label>
+		<mat-icon matPrefix>search</mat-icon>
+		<input matNativeControl [value]=search.current_search (input)=this.search.search($event.target.value); (keypress)=$event.stopImmediatePropagation()>
+	</mat-form-field>
+	<div id="top-bar-right">
+		<app-music-upload></app-music-upload>
+		<div>
+			<app-settings-menu></app-settings-menu>
+			<a (click)="user.logout()" *ngIf="Cookies.get('session') != undefined" class="clickable">logout</a>
+			<a (click)="router.navigate(['login'])" *ngIf="Cookies.get('session') == undefined"
+			   class="clickable">login</a>
+			<br>
+			<a (click)="router.navigate(['register'])" *ngIf="Cookies.get('session') == undefined" class="clickable">register</a>
+			<br>
+		</div>
+	</div>
+</mat-toolbar>

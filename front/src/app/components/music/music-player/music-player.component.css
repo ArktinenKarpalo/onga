@@ -1,0 +1,52 @@
+:host {
+	display: block;
+	width: 100vw;
+	height: 135px;
+	bottom: 0;
+	background-color: #3f51b5;
+}
+
+.music-player {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	color: white;
+}
+
+.music-player-left {
+	display: inline-block;
+	flex-grow: 1;
+	flex-shrink: 1;
+	flex-basis: 0;
+	text-align: left;
+}
+
+.music-player-middle {
+	display: inline-block;
+	text-align: center;
+}
+
+.music-player-title {
+	height: 25px;
+}
+
+.music-player-right {
+	margin-right: 15px;
+	display: inline-block;
+	flex-grow: 1;
+	flex-shrink: 1;
+	flex-basis: 0;
+	text-align: right;
+}
+
+.music-player-buttons {
+	font-size: 48px;
+}
+
+.music-player-toggled-button {
+	color: orange;
+}
+
+.music-play-current-artist {
+	color: rgb(140, 140, 140);
+}

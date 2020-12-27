@@ -1,0 +1,28 @@
+version: "3.4"
+services:
+  back:
+    build:
+      context: .
+    depends_on:
+      - db
+    environment:
+      POSTGRES_USERNAME: onga
+      POSTGRES_PASSWORD: onga
+      POSTGRES_DB: onga_test
+      POSTGRES_DB_URL: db
+    command: "npm test"
+    ports:
+      - "3000:3000"
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: onga
+      POSTGRES_PASSWORD: onga
+      POSTGRES_DB: onga_test
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d onga_test -U onga"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "4766:5432"

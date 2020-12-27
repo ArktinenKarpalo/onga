@@ -1,0 +1,27 @@
+:host {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+#album-view-cover {
+	max-height: 150px;
+	max-width: 150px;
+}
+
+#album-view-info-wrap {
+	display: flex;
+	flex-direction: row;
+}
+
+#album-view-info-right {
+	margin-left: 15px;
+}
+
+.album-view-info-inline {
+	display: inline-block;
+}
+
+#album-duration {
+	margin-left: 5px;
+}

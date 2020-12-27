@@ -1,0 +1,17 @@
+h1 {
+	text-align: center;
+}
+
+#login-form {
+	margin-top: 25px;
+	display: block;
+	text-align: center;
+}
+
+#login-form-wrapper {
+	display: block;
+}
+
+#error {
+	color: red;
+}

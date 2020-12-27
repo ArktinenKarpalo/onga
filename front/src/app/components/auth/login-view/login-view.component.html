@@ -1,0 +1,11 @@
+<h1>Login</h1>
+<div id="login-form-wrapper">
+	<form [formGroup]="loginForm" (ngSubmit)="onSubmit(loginForm.value)" id="login-form">
+		<input type="text" formControlName="username" placeholder="username" required>
+		<br>
+		<input type="password" formControlName="password" placeholder="password" required>
+		<br>
+		<input type="submit" value="Login">
+	</form>
+</div>
+<h1 *ngIf="error" id="error">{{error}}</h1>

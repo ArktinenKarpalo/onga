@@ -1,0 +1,4 @@
+**/node_modules
+front/dist
+back/build
+**.iml

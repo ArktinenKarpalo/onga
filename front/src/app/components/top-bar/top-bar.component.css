@@ -1,0 +1,30 @@
+#search {
+	width: 800px;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+#top-toolbar {
+	display: flex;
+	justify-content: space-between;
+}
+
+#top-bar-title {
+	user-select: none;
+	border: none;
+}
+
+#top-bar-title:focus {
+	outline: none;
+}
+
+#top-bar-title:hover {
+	color: orange;
+}
+
+#top-bar-right {
+	display: flex;
+	justify-content: space-between;
+}

@@ -1,0 +1,50 @@
+version: "3.8"
+services:
+  back:
+    build:
+      context: .
+      target: back
+    depends_on:
+      - db
+    restart: on-failure:3
+    environment:
+      POSTGRES_USERNAME: onga
+      POSTGRES_PASSWORD: onga
+      POSTGRES_DB: onga
+      POSTGRES_DB_URL: db
+    volumes:
+      - files:/srv/public
+    ports:
+      - "4664:4664"
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: onga
+      POSTGRES_PASSWORD: onga
+      POSTGRES_DB: onga
+    volumes:
+      - db:/var/lib/postgresql/data
+    restart: on-failure:3
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U onga" ]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "4666:5432"
+  serve:
+    build:
+      context: .
+      target: nginx
+    restart: on-failure:3
+    ports:
+      - "3939:80"
+    depends_on:
+      - back
+    volumes:
+      - files:/usr/share/nginx/html/files
+    expose:
+      - "3939"
+volumes:
+  db:
+  files:
