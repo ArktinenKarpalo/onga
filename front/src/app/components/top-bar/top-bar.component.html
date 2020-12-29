@@ -3,7 +3,7 @@
 	<mat-form-field appearance=fill id="search" *ngIf="Cookies.get('session') != undefined">
 		<mat-label>Search</mat-label>
 		<mat-icon matPrefix>search</mat-icon>
-		<input matNativeControl [value]=search.current_search (input)=this.search.search($event.target.value); (keypress)=$event.stopImmediatePropagation()>
+		<input matNativeControl [value]=search.current_search (input)=this.search.search($event.target.value); (keypress)=$event.stopImmediatePropagation() autocomplete="off">
 	</mat-form-field>
 	<div id="top-bar-right">
 		<app-music-upload></app-music-upload>
