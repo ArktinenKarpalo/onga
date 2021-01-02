@@ -23,10 +23,11 @@ export class SearchService {
 		});
 	}
 
-	private filter_albums(albums: Album[], search: string): Album[] {
+	private filter_albums(albums: Album[], search: string, album_ids: Set<number> = new Set()): Album[] {
 		return albums.filter((val: Album) => {
 			if(val.artist.toLowerCase().includes(search) ||
-				val.name.toLowerCase().includes(search))
+				val.name.toLowerCase().includes(search) ||
+				album_ids.has(val.id))
 				return true;
 		});
 	}
@@ -44,7 +45,11 @@ export class SearchService {
 		this.router.navigate([""]);
 		s = s.toLowerCase();
 		this.current_search = s;
-		this.filtered_albums.next(this.filter_albums(this.user.albums.getValue(), s));
 		this.filtered_tracks.next(this.filter_tracks(this.user.tracks.getValue(), s));
+		const album_ids = new Set<number>();
+		for(let track of this.filtered_tracks.getValue()) {
+			album_ids.add(track.album_id);
+		}
+		this.filtered_albums.next(this.filter_albums(this.user.albums.getValue(), s, album_ids));
 	}
 }
