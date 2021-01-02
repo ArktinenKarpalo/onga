@@ -16,6 +16,7 @@ export class MusicPlayerComponent implements OnInit {
 	@HostListener("document:keypress", ["$event"])
 	handleKeyboardEvent(event: KeyboardEvent) {
 		if(event.code == "Space") {
+			event.preventDefault();
 			this.music.toggle();
 		} else if(event.code == "KeyM") {
 			if(this.music.current_audio.volume == 0) {
