@@ -5,6 +5,7 @@ import * as db_track_file from "./database/track_file.js";
 import * as file from "./file.js";
 import {delete_track} from "./database/track";
 import {delete_album} from "./database/album";
+import {Task} from "./types/task";
 
 const bitrates: Map<number, string> = new Map<number, string>([[1, "64k"], [2, "256k"]]);
 
@@ -28,15 +29,26 @@ export const check_queue = async(): Promise<void> => {
 };
 
 const start_worker = async() => {
-	while(await encode());
+	let task;
+	while((task = await db_track_file.get_encoding_task()) != undefined) {
+		await encode(task);
+	}
 };
 
-// Returns false if encoding task was not found
-const encode = async(): Promise<boolean> => {
-	const task = await db_track_file.get_encoding_task();
-	if(task == undefined) {
-		return false;
+const encoding_tasks = new Map<number, Promise<void>>();
+
+export const encode = async(task: Task): Promise<void> => {
+	if(!encoding_tasks.has(task.id)) {
+		let task_promise;
+		encoding_tasks.set(task.id, task_promise=encode_task(task)
+			.finally(() => encoding_tasks.delete(task.id)));
+		return task_promise;
+	} else {
+		return encoding_tasks.get(task.id);
 	}
+};
+
+const encode_task = async(task: Task): Promise<void> => {
 	if(task.status == db_track_file.status.ENCODING_ON_PROGRESS) {
 		const original_file = await db_track_file.get_file_path(task.track_id, 0);
 		if(original_file == undefined) {
@@ -76,15 +88,13 @@ const encode = async(): Promise<boolean> => {
 			await file.delete_file(task.file_id);
 		}
 		const track = await delete_track(task.track_id);
-		if(track == undefined) // Unsuccessful deletion
-		{
-			return true;
+		if(track == undefined) { // Unsuccessful deletion
+			return;
 		}
 		const album = await delete_album(track.album_id);
 		if(album == undefined) {
-			return true;
+			return;
 		}
 		await file.delete_file(album.cover_file_id);
 	}
-	return true;
 };

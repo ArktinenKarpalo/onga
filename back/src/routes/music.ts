@@ -19,10 +19,20 @@ router.get("/track_file/:quality/:track_id", req_auth, async(req, res, next) => 
 			res.sendStatus(400);
 			return;
 		}
-		const path = await db_track_file.get_track_file_path(Number.parseInt(req.params.track_id),
-			Number.parseInt(req.params.quality), res.locals.user.id);
+		const track_id = Number.parseInt(req.params.track_id);
+		const quality = Number.parseInt(req.params.quality);
+		const user_id = res.locals.user.id;
+		let path = await db_track_file.get_track_file_path(track_id, quality, user_id);
 		if(path == undefined) {
-			res.sendStatus(404);
+			const task = await db_track_file.mark_encoding_task(track_id, quality, user_id);
+			if(task != undefined) {
+				await encoding.encode(task);
+			}
+			path = await db_track_file.get_track_file_path(track_id, quality, user_id);
+			if(path == undefined)
+				res.sendStatus(404);
+			else
+				res.send({path});
 		} else {
 			res.send({path});
 		}

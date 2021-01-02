@@ -1,5 +1,6 @@
 import {PoolClient} from "pg";
 import {pool} from "./database.js";
+import {Task} from "../types/task";
 
 export const enum status {
 	TO_ENCODE = 0,
@@ -97,10 +98,7 @@ export const insert_encoding_tasks = async(track_id: number): Promise<void> => {
 };
 
 // Returns the task or undefined if no tasks, marks the task as in progress
-export const get_encoding_task = async(): Promise<undefined | {
-	id: number, track_id: number,
-	quality: 1 | 2, status: number, file_id: number
-}> => {
+export const get_encoding_task = async(): Promise<undefined | Task> => {
 	try {
 		const result = await pool.query(`
 			UPDATE track_file
@@ -117,6 +115,23 @@ export const get_encoding_task = async(): Promise<undefined | {
 		console.error(`Error while getting encoding task ${e}`);
 		throw new Error("Database error");
 	}
+};
+
+export const mark_encoding_task = async(track_id: number, quality: number, user_id: number): Promise<undefined | Task> => {
+	try {
+		const result = await pool.query(`
+			UPDATE track_file
+			SET status=1
+			FROM track
+			WHERE track_file.track_id = $1 AND quality=$2 AND track.user_id=$3 AND track.id = track_file.track_id AND (status=0 OR status=1)
+			RETURNING track_file.id, track_id, quality, status, file_id
+		`, [track_id, quality, user_id]);
+		return result.rows[0];
+	} catch(e) {
+		console.error(`Error while marking encoding task ${track_id} ${quality} ${user_id} ${e}`);
+		throw new Error("Database error");
+	}
+	return undefined;
 };
 
 export const get_file_path = async(track_id: number, quality: number): Promise<undefined | { user_id: number, path: string }> => {
