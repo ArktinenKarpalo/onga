@@ -13,12 +13,15 @@ export class MusicPlayerComponent implements OnInit {
 
 	shareClipboard = "Click to copy link to the current track into clipboard";
 
-	@HostListener("document:keypress", ["$event"])
+	@HostListener("document:keydown", ["$event"])
 	handleKeyboardEvent(event: KeyboardEvent) {
 		if(event.code == "Space") {
 			event.preventDefault();
+			event.stopImmediatePropagation()
 			this.music.toggle();
 		} else if(event.code == "KeyM") {
+			event.preventDefault();
+			event.stopImmediatePropagation()
 			if(this.music.current_audio.volume == 0) {
 				this.music.setVolume(100);
 			} else {
