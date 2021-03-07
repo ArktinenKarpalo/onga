@@ -14,9 +14,7 @@ WORKDIR front/
 COPY front/package.json front/package-lock.json ./
 RUN npm install
 COPY front/ .
-#RUN npm run ng build --prod
-RUN npm run ng build
-
+RUN npm run ng build --prod
 FROM nginx:1.19 as nginx
 COPY --from=front front/dist/Onga /usr/share/nginx/html
 COPY config/nginx/nginx.conf /etc/nginx/nginx.conf
