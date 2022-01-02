@@ -113,7 +113,7 @@ export class UserService {
 
 	// Resolves with string with error message that should be shown to user
 	async login(username: string, password: string) {
-		return new Promise((res) => {
+		return new Promise<void | string>((res) => {
 			this.http.post("api/auth/login", {username, password}, {headers: {csrf: ""}}).subscribe((response: any) => {
 				if(response.status === "OK") {
 					this.getData();
