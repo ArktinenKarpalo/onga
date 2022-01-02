@@ -30,7 +30,7 @@ export class PlayProgressComponent implements OnInit {
 	}
 
 	hoverProgress(ev) {
-		if(this.music.state != states.LOADING && this.music.current_audio.readyState >= 1 && this.music.current_audio.duration > 0) {
+		if(this.music.current_audio.readyState >= 1 && this.music.current_audio.duration > 0) {
 			this.showSkipProgress = true;
 
 			const p = ev.offsetX / ev.view.innerWidth;

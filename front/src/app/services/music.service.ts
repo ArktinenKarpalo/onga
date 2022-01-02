@@ -9,7 +9,6 @@ import Album from "../types/album";
 export enum states {
 	PLAYING,
 	PAUSED,
-	LOADING
 }
 
 export enum repeat {
@@ -27,7 +26,6 @@ export class MusicService {
 	shuffle: Boolean = false;
 
 	current_track: Track | undefined = undefined;
-
 	state = states.PAUSED;
 
 	current_audio: HTMLAudioElement = new Audio(undefined);
@@ -37,17 +35,26 @@ export class MusicService {
 		this.current_audio.onerror = (ev) => {
 			console.error("Audio error: ", ev);
 		};
-		this.current_audio.onended = (ev) => {
-			this.user.track_played(this.current_track);
-			if(this.repeating == repeat.ONE) {
-				this.current_audio.currentTime = 0;
-				this.current_audio.play();
-			} else {
-				this.next();
-			}
-		};
+		this.current_audio.onplay = (() => {
+			this.state = states.PLAYING
+		})
+		this.current_audio.onpause = (() => {
+			this.state = states.PAUSED
+		})
 		this.current_audio.addEventListener("timeupdate", ev => {
-			// Required for updates
+			/**
+			 * Before onEnded event, media element is paused,
+			 * timeupdate is emitted before pause,
+			 * we use this to select the next track seamlessly.
+			 */
+			if(this.current_audio.currentTime == this.current_audio.duration) {
+				if(this.repeating == repeat.ONE) {
+					this.current_audio.currentTime = 0;
+					this.current_audio.play();
+				} else {
+					this.next();
+				}
+			}
 		})
 	}
 
@@ -74,13 +81,11 @@ export class MusicService {
 
 	toggle() {
 		if(this.state == states.PAUSED) {
-			this.state = states.PLAYING;
 			this.current_audio.play().catch(err => {
 				console.error("play fail", err);
 				this.next();
 			});
 		} else {
-			this.state = states.PAUSED;
 			this.current_audio.pause();
 		}
 	}
@@ -96,19 +101,17 @@ export class MusicService {
 	}
 
 	setTrack(track: Track) {
-		this.current_audio.pause();
 		if(this.current_track != undefined) {
 			this.play_history.push(this.current_track);
 			this.play_history = [...this.play_history];
 		}
 		this.current_track = track;
 		if(track == undefined) {
+			this.current_audio.pause();
 			this.current_audio.src = "";
 			this.current_audio.load();
-			this.state = states.PAUSED;
 			return;
 		}
-		this.state = states.LOADING;
 
 		const track_req_start = this.current_track;
 
@@ -120,7 +123,6 @@ export class MusicService {
 			if(this.current_track == track_req_start) {
 				this.current_audio.src = "files/" + val.path;
 				this.current_audio.play();
-				this.state = states.PLAYING;
 			}
 		}, err => {
 			if(this.current_track == track_req_start)
@@ -131,7 +133,6 @@ export class MusicService {
 
 	skipTo(offset: number) {
 		this.shuffle = false;
-		this.setTrack(undefined);
 		if(offset > 0) {
 			this.play_history = this.play_history.concat(this.play_queue.splice(0, offset - 1));
 			this.play_queue = [...this.play_queue];
@@ -147,7 +148,6 @@ export class MusicService {
 	next() {
 		if(this.play_queue.length == 0) {
 			if(this.repeating == repeat.ALL) {
-				this.setTrack(undefined);
 				this.play_queue = this.play_history;
 				this.play_history = [];
 			}

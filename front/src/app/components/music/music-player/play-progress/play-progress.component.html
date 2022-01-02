@@ -1,7 +1,7 @@
 <div #playProgressBar id="play-progress-bar" (mousemove)=hoverProgress($event) (click)=setProgress($event)
 	 (mouseleave)="showSkipProgress=false" (mouseenter)="showSkipProgress=true">
 	<div id="play-progress-bar-fill"
-		 *ngIf="music.state != states.LOADING && music.current_audio.readyState >= 1 && music.current_audio.duration > 0"
+		 *ngIf="music.current_audio.readyState >= 1 && music.current_audio.duration > 0"
 		 [style.width]="music.current_audio.currentTime/music.current_audio.duration*100 + '%'"></div>
 	<div #playProgressBarFillSkip id="play-progress-bar-fill-skip" *ngIf="showSkipProgress"></div>
 

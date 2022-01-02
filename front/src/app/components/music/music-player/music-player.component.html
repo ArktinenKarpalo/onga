@@ -16,8 +16,8 @@
 		</button>
 		<button mat-icon-button class="music-player-buttons" [disabled]="music.current_track == undefined"
 				(click)=music.toggle()>
-			<mat-icon *ngIf="music.state == 1" inline="true">play_arrow</mat-icon>
-			<mat-icon *ngIf="music.state != 1" inline="true">pause</mat-icon>
+			<mat-icon *ngIf="music.state == states.PAUSED" inline="true">play_arrow</mat-icon>
+			<mat-icon *ngIf="music.state == states.PLAYING" inline="true">pause</mat-icon>
 		</button>
 		<button mat-icon-button class="music-player-buttons" [disabled]="music.play_queue.length == 0"
 				(click)=music.next()>
@@ -34,13 +34,13 @@
 		<button mat-icon-button (click)="music.shuffle = !music.shuffle">
 			<mat-icon [class.music-player-toggled-button]=music.shuffle>shuffle</mat-icon>
 		</button>
-		<button mat-icon-button [disabled]="music.current_track == undefined || music.state == states.LOADING"
+		<button mat-icon-button [disabled]="music.current_track == undefined"
 				[cdkCopyToClipboard]=music.current_audio.src [matTooltip]=shareClipboard (click)=copyToClipboard()>
 			<mat-icon>link</mat-icon>
 		</button>
 	</div>
 	<div class="music-player-right">
-		<span *ngIf="music.state != states.LOADING && music.current_audio.readyState >= 1 && music.current_audio.duration > 0">{{music.current_audio.currentTime | duration}}
+		<span *ngIf="music.current_audio.readyState >= 1 && music.current_audio.duration > 0">{{music.current_audio.currentTime | duration}}
 			/ {{music.current_audio.duration | duration}}</span>
 		<br>
 		<mat-icon *ngIf="this.music.current_audio.volume > 0" (click)=this.music.setVolume(0)>volume_up</mat-icon>
@@ -49,6 +49,6 @@
 					[value]="music.current_audio.volume*100">
 		</mat-slider>
 		<br>
-		<span *ngIf="(music.state == states.LOADING) || (music.state == states.PLAYING && music.current_audio.readyState < 3)">Loading...</span>
+		<span *ngIf="music.current_track != undefined && (music.current_audio.readyState < 3)">Loading...</span>
 	</div>
 </div>

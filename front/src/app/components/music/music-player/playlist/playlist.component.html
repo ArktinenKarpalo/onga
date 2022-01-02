@@ -5,7 +5,7 @@
 				<mat-panel-title>
 					Playlist
 					<div class="playlist-remaining">
-						Remaining: {{(this.music.play_queue | trackTotalDuration) + (this.music.state == this.states.PLAYING ? (this.toNumber(this.music.current_track.duration) - this.music.current_audio.currentTime) : 0) | duration}}
+						Remaining: {{(this.music.play_queue | trackTotalDuration) + (!this.music.current_audio.paused ? (this.toNumber(this.music.current_track.duration) - this.music.current_audio.currentTime) : 0) | duration}}
 					</div>
 					<button mat-button (click)="music.setTrack(undefined);music.clear_queue();">Clear</button>
 				</mat-panel-title>
