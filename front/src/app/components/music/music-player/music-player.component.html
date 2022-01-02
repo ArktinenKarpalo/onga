@@ -45,7 +45,7 @@
 		<br>
 		<mat-icon *ngIf="this.music.current_audio.volume > 0" (click)=this.music.setVolume(0)>volume_up</mat-icon>
 		<mat-icon *ngIf="this.music.current_audio.volume == 0" (click)=this.music.setVolume(100)>volume_off</mat-icon>
-		<mat-slider min="0" max="100" (valueChange)=this.music.setVolume($event)
+		<mat-slider min="0" max="100" (input)=this.music.setVolume($event.value)
 					[value]="music.current_audio.volume*100">
 		</mat-slider>
 		<br>
